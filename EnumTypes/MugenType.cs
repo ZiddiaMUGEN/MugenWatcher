@@ -9,8 +9,8 @@ namespace MugenWatcher.EnumTypes
     /// </summary>
     public enum MugenType_t
     {
-        MUGEN_TYPE_UNKNOWN,
-        MUGEN_TYPE_WIN,
+        MUGEN_TYPE_NONE,
+        MUGEN_TYPE_WINMUGEN,
         MUGEN_TYPE_MUGEN10,
         MUGEN_TYPE_MUGEN11A4,
         MUGEN_TYPE_MUGEN11B1
