@@ -46,6 +46,8 @@ namespace MugenWatcher.Watcher
         /// <param name="newVersion"></param>
         public void SetMugenVersion(MugenType_t newVersion)
         {
+            // reset base addr
+            this.BaseAddress = 0;
             if (this.MugenVersion == MugenType_t.MUGEN_TYPE_NONE)
             {
                 this.MugenVersion = newVersion;
