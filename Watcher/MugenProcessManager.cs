@@ -8,7 +8,7 @@ namespace MugenWatcher.Watcher
     /// <summary>
     /// multi-purpose handler for the Process object, including memory read/write ops.
     /// </summary>
-    public class MugenProcessManager
+    internal class MugenProcessManager
     {
 
         /// <summary>

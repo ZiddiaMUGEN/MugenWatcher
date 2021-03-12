@@ -1,8 +1,10 @@
-﻿using MugenWatcher.Databases;
+﻿using Microsoft.Samples.Debugging.Native;
+using MugenWatcher.Databases;
 using MugenWatcher.EnumTypes;
 using MugenWatcher.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 
@@ -25,10 +27,12 @@ namespace MugenWatcher.Watcher
         public int BaseAddress { get; internal set; }
 
         private readonly MugenProcessManager processManager;
+        private readonly DebugProcessManager debugManager;
 
         public MugenProcessWatcher()
         {
             this.processManager = new MugenProcessManager();
+            this.debugManager = new DebugProcessManager();
         }
 
         /// <summary>
@@ -181,6 +185,51 @@ namespace MugenWatcher.Watcher
                 }
             }
             return true;
+        }
+
+        public BackgroundWorker GetProcessWatcher()
+        {
+            return debugManager.processWatcher;
+        }
+
+        public NativeDbgProcess GetDebugProcess()
+        {
+            return debugManager.debugProcess;
+        }
+
+        public bool SetBreakpoint(uint targetAddress)
+        {
+            return this.debugManager.SetHardwareBreakpoint(targetAddress);
+        }
+
+        public void ClearHardwareBreakpoint()
+        {
+            this.debugManager.ClearHardwareBreakpoint();
+        }
+
+        public uint GetStackPointer()
+        {
+            return this.debugManager.GetStackPointer(this);
+        }
+
+        public void AttachDebugProcess()
+        {
+            this.debugManager.AttachDebugProcess(this.processManager.GetMugenProcess().Id);
+        }
+
+        public void ContinueEvent(NativeEvent awaitedNativeEvent, bool v)
+        {
+            this.debugManager.debugControl.ContinueEvent(awaitedNativeEvent, v);
+        }
+
+        public void DisposeDebugProcess()
+        {
+            this.debugManager.DisposeDebugProcess();
+        }
+
+        public void SetDebugProcessRunner(IDebugProcessRunner runner)
+        {
+            this.debugManager.SetDebugProcessRunner(runner);
         }
     }
 }
