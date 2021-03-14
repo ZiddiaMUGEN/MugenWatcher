@@ -5,9 +5,9 @@ using System.Text;
 
 namespace MugenWatcher
 {
-    internal class ExternalFuncs
+    public class ExternalFuncs
     {
-        internal struct CONTEXT
+        public struct CONTEXT
         {
             public uint ContextFlags;
             public uint Dr0;
@@ -36,7 +36,7 @@ namespace MugenWatcher
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 512)]
             public byte[] ExtendedRegisters;
         }
-        internal struct FLOATING_SAVE_AREA
+        public struct FLOATING_SAVE_AREA
         {
             public uint ControlWord;
             public uint StatusWord;

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
+using static MugenWatcher.ExternalFuncs;
 
 namespace MugenWatcher.Watcher
 {
@@ -137,6 +138,11 @@ namespace MugenWatcher.Watcher
 
         public float GetFloatData(uint addr, uint offset) => this.processManager.GetFloatData(addr, offset);
 
+        public NativePipeline GetDebugController()
+        {
+            return this.debugManager.debugControl;
+        }
+
         public double GetDoubleData(uint addr, uint offset) => this.processManager.GetDoubleData(addr, offset);
 
         public void SetInt32Data(uint addr, uint offset, int value) => this.processManager.SetInt32Data(addr, offset, value);
@@ -187,6 +193,11 @@ namespace MugenWatcher.Watcher
             return true;
         }
 
+        public void SetThreadContext(CONTEXT ctx)
+        {
+            this.debugManager.SetDebugThreadContext(this, ctx, 0);
+        }
+
         public BackgroundWorker GetProcessWatcher()
         {
             return debugManager.processWatcher;
@@ -197,9 +208,14 @@ namespace MugenWatcher.Watcher
             return debugManager.debugProcess;
         }
 
-        public bool SetBreakpoint(uint targetAddress)
+        public bool SetInstructionBreakpoint(uint targetAddress, int debugSlot = 0)
         {
-            return this.debugManager.SetHardwareBreakpoint(targetAddress);
+            return this.debugManager.SetInstructionBreakpoint(targetAddress, debugSlot);
+        }
+
+        public bool SetDataBreakpoint(uint targetAddress)
+        {
+            return this.debugManager.SetDataBreakpoint(targetAddress);
         }
 
         public void ClearHardwareBreakpoint()
@@ -217,9 +233,9 @@ namespace MugenWatcher.Watcher
             this.debugManager.AttachDebugProcess(this.processManager.GetMugenProcess().Id);
         }
 
-        public void ContinueEvent(NativeEvent awaitedNativeEvent, bool v)
+        public void ContinueEvent(NativeEvent awaitedNativeEvent, bool bNotHandle)
         {
-            this.debugManager.debugControl.ContinueEvent(awaitedNativeEvent, v);
+            this.debugManager.debugControl.ContinueEvent(awaitedNativeEvent, bNotHandle);
         }
 
         public void DisposeDebugProcess()
@@ -230,6 +246,11 @@ namespace MugenWatcher.Watcher
         public void SetDebugProcessRunner(IDebugProcessRunner runner)
         {
             this.debugManager.SetDebugProcessRunner(runner);
+        }
+
+        public CONTEXT GetDebugThreadContext(int threadID = 0)
+        {
+            return this.debugManager.GetDebugThreadContext(this, threadID);
         }
     }
 }

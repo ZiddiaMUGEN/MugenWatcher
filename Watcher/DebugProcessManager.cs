@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using static MugenWatcher.ExternalFuncs;
@@ -32,7 +33,65 @@ namespace MugenWatcher.Watcher
             this.debugRunner = runner;
         }
 
-        internal bool SetHardwareBreakpoint(uint breakpointAddress)
+        internal bool SetInstructionBreakpoint(uint breakpointAddress, int debugSlot)
+        {
+            // verify debug thread obtained
+            if (this.debugTargetThread == 0) return false;
+
+            // verify debug process running
+            if (this.debugProcess == null)
+                return false;
+
+            // context for the debugging
+            CONTEXT context = new CONTEXT
+            {
+                ContextFlags = (uint)CONTEXT_FLAGS.CONTEXT_DEBUG_REGISTERS
+            };
+
+            IntPtr num = IntPtr.Zero;
+
+            try
+            {
+                num = OpenThread(ThreadAccessFlags.SUSPEND_RESUME | ThreadAccessFlags.GET_CONTEXT | ThreadAccessFlags.SET_CONTEXT | ThreadAccessFlags.QUERY_INFORMATION, false, (uint)this.debugTargetThread);
+                if (num == IntPtr.Zero || SuspendThreadEx(num) == -1)
+                    return false;
+                if (GetThreadContextEx(num, ref context))
+                {
+                    switch(debugSlot)
+                    {
+                        case 0:
+                            context.Dr0 = breakpointAddress;
+                            context.Dr7 |= 0x103U;
+                            break;
+                        case 1:
+                            context.Dr1 = breakpointAddress;
+                            context.Dr7 |= 0x10CU;
+                            break;
+                        case 2:
+                            context.Dr2 = breakpointAddress;
+                            context.Dr7 |= 0x130U;
+                            break;
+                        case 3:
+                            context.Dr3 = breakpointAddress;
+                            context.Dr7 |= 0x1C0U;
+                            break;
+                    }
+                    
+                    
+                    SetThreadContextEx(num, ref context);
+                }
+                ResumeThreadEx(num);
+            }
+            finally
+            {
+                if (num != IntPtr.Zero)
+                    CloseHandle(num);
+            }
+
+            return true;
+        }
+
+        internal bool SetDataBreakpoint(uint breakpointAddress)
         {
             // verify debug thread obtained
             if (this.debugTargetThread == 0) return false;
@@ -108,6 +167,60 @@ namespace MugenWatcher.Watcher
             }
         }
 
+        internal CONTEXT GetDebugThreadContext(MugenProcessWatcher watcher, int threadID)
+        {
+            if (threadID == 0) threadID = this.debugTargetThread;
+            CONTEXT context = new CONTEXT
+            {
+                ContextFlags = (uint)CONTEXT_FLAGS.CONTEXT_ALL
+            };
+
+            if (this.debugProcess == null || threadID == 0)
+                return context;
+
+            IntPtr debugPtr = IntPtr.Zero;
+
+            try
+            {
+                debugPtr = OpenThread(ThreadAccessFlags.GET_CONTEXT | ThreadAccessFlags.QUERY_INFORMATION, false, (uint)threadID);
+                if (debugPtr != IntPtr.Zero)
+                {
+                    GetThreadContextEx(debugPtr, ref context);
+                }
+            }
+            finally
+            {
+                if (debugPtr != IntPtr.Zero)
+                    CloseHandle(debugPtr);
+            }
+
+            return context;
+        }
+
+        internal void SetDebugThreadContext(MugenProcessWatcher watcher, CONTEXT context, int threadID)
+        {
+            if (threadID == 0) threadID = this.debugTargetThread;
+
+            if (this.debugProcess == null || threadID == 0)
+                return;
+
+            IntPtr debugPtr = IntPtr.Zero;
+
+            try
+            {
+                debugPtr = OpenThread(ThreadAccessFlags.SET_CONTEXT | ThreadAccessFlags.SET_INFORMATION, false, (uint)threadID);
+                if (debugPtr != IntPtr.Zero)
+                {
+                    SetThreadContextEx(debugPtr, ref context);
+                }
+            }
+            finally
+            {
+                if (debugPtr != IntPtr.Zero)
+                    CloseHandle(debugPtr);
+            }
+        }
+
         internal uint GetStackPointer(MugenProcessWatcher watcher)
         {
             if (this.debugProcess == null || this.debugTargetThread == 0)
@@ -162,10 +275,9 @@ namespace MugenWatcher.Watcher
         private void ProcessWatcherEventHandler(object sender, DoWorkEventArgs e)
         {
             if (debugRunner != null) debugRunner.Initialize();
-            BackgroundWorker backgroundWorker = (BackgroundWorker) sender;
             // will represent the thread we set BPs in
             this.debugTargetThread = 0;
-            while (!backgroundWorker.CancellationPending)
+            while (!this.processWatcher.CancellationPending)
             {
                 // check if it's time to trigger a debug event callback
                 if (this.debugProcess != null)
