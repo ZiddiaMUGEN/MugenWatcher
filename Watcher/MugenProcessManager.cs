@@ -88,7 +88,7 @@ namespace MugenWatcher.Watcher
         {
             if (!this.CheckMugenProcessActive())
                 return 0;
-            int lpNumberOfBytesRead = 0;
+            int lpNumberOfBytesRead;
             try
             {
                 if (!ExternalFuncs.ReadProcessMemory(this.GetMugenProcess().Handle, addr, buf, (UIntPtr)bufLen, out lpNumberOfBytesRead))
@@ -151,6 +151,17 @@ namespace MugenWatcher.Watcher
         {
             byte[] bytes = BitConverter.GetBytes(value);
             this.WriteMemory((IntPtr)(long)(addr + offset), ref bytes, 4U);
+        }
+
+        internal void SetUInt32Data(uint addr, uint offset, uint value)
+        {
+            byte[] bytes = BitConverter.GetBytes(value);
+            this.WriteMemory((IntPtr)(long)(addr + offset), ref bytes, 4U);
+        }
+
+        internal void SetByteData(uint addr, uint offset, byte[] values)
+        {
+            this.WriteMemory((IntPtr)(long)(addr + offset), ref values, (uint) values.Length);
         }
 
         /// <summary>

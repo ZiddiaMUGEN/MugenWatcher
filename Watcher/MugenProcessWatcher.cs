@@ -147,6 +147,10 @@ namespace MugenWatcher.Watcher
 
         public void SetInt32Data(uint addr, uint offset, int value) => this.processManager.SetInt32Data(addr, offset, value);
 
+        public void SetUInt32Data(uint addr, uint offset, uint value) => this.processManager.SetUInt32Data(addr, offset, value);
+
+        public void SetByteData(uint addr, uint offset, byte[] values) => this.processManager.SetByteData(addr, offset, values);
+
         public void SetFloatData(uint addr, uint offset, float value) => this.processManager.SetFloatData(addr, offset, value);
 
         public void SetDoubleData(uint addr, uint offset, double value) => this.processManager.SetDoubleData(addr, offset, value);
