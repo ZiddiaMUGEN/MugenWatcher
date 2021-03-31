@@ -11,35 +11,37 @@ namespace MugenWatcher.Watcher
 {
     internal class DebugProcessManager
     {
-        internal NativePipeline debugControl { get; private set; }
-        internal BackgroundWorker processWatcher { get; private set; }
+        internal NativePipeline DebugControl { get; private set; }
+        internal BackgroundWorker ProcessWatcher { get; private set; }
 
         // debugging Mugen process (used with trigger breakpoints)
-        internal NativeDbgProcess debugProcess { get; private set; }
-        internal int debugTargetThread { get; private set; }
-        internal IDebugProcessRunner debugRunner { get; private set; }
+        internal NativeDbgProcess DebugProcess { get; private set; }
+        internal int DebugTargetThread { get; private set; }
+        internal IDebugProcessRunner DebugRunner { get; private set; }
 
         internal DebugProcessManager()
         {
-            this.debugControl = new NativePipeline();
-            this.debugRunner = null;
-            this.processWatcher = new BackgroundWorker();
-            this.processWatcher.WorkerSupportsCancellation = true;
-            this.processWatcher.DoWork += new DoWorkEventHandler(this.ProcessWatcherEventHandler);
+            this.DebugControl = new NativePipeline();
+            this.DebugRunner = null;
+            this.ProcessWatcher = new BackgroundWorker
+            {
+                WorkerSupportsCancellation = true
+            };
+            this.ProcessWatcher.DoWork += new DoWorkEventHandler(this.ProcessWatcherEventHandler);
         }
 
         internal void SetDebugProcessRunner(IDebugProcessRunner runner)
         {
-            this.debugRunner = runner;
+            this.DebugRunner = runner;
         }
 
         internal bool SetInstructionBreakpoint(uint breakpointAddress, int debugSlot)
         {
             // verify debug thread obtained
-            if (this.debugTargetThread == 0) return false;
+            if (this.DebugTargetThread == 0) return false;
 
             // verify debug process running
-            if (this.debugProcess == null)
+            if (this.DebugProcess == null)
                 return false;
 
             // context for the debugging
@@ -52,7 +54,7 @@ namespace MugenWatcher.Watcher
 
             try
             {
-                num = OpenThread(ThreadAccessFlags.SUSPEND_RESUME | ThreadAccessFlags.GET_CONTEXT | ThreadAccessFlags.SET_CONTEXT | ThreadAccessFlags.QUERY_INFORMATION, false, (uint)this.debugTargetThread);
+                num = OpenThread(ThreadAccessFlags.SUSPEND_RESUME | ThreadAccessFlags.GET_CONTEXT | ThreadAccessFlags.SET_CONTEXT | ThreadAccessFlags.QUERY_INFORMATION, false, (uint)this.DebugTargetThread);
                 if (num == IntPtr.Zero || SuspendThreadEx(num) == -1)
                     return false;
                 if (GetThreadContextEx(num, ref context))
@@ -94,10 +96,10 @@ namespace MugenWatcher.Watcher
         internal bool SetDataBreakpoint(uint breakpointAddress)
         {
             // verify debug thread obtained
-            if (this.debugTargetThread == 0) return false;
+            if (this.DebugTargetThread == 0) return false;
 
             // verify debug process running
-            if (this.debugProcess == null)
+            if (this.DebugProcess == null)
                 return false;
 
             // context for the debugging
@@ -110,7 +112,7 @@ namespace MugenWatcher.Watcher
 
             try
             {
-                num = OpenThread(ThreadAccessFlags.SUSPEND_RESUME | ThreadAccessFlags.GET_CONTEXT | ThreadAccessFlags.SET_CONTEXT | ThreadAccessFlags.QUERY_INFORMATION, false, (uint)this.debugTargetThread);
+                num = OpenThread(ThreadAccessFlags.SUSPEND_RESUME | ThreadAccessFlags.GET_CONTEXT | ThreadAccessFlags.SET_CONTEXT | ThreadAccessFlags.QUERY_INFORMATION, false, (uint)this.DebugTargetThread);
                 if (num == IntPtr.Zero || SuspendThreadEx(num) == -1)
                     return false;
                 if (GetThreadContextEx(num, ref context))
@@ -136,9 +138,9 @@ namespace MugenWatcher.Watcher
         /// <param name="threadId"></param>
         internal void ClearHardwareBreakpoint()
         {
-            if (this.debugTargetThread == 0)
+            if (this.DebugTargetThread == 0)
                 return;
-            if (this.debugProcess == null)
+            if (this.DebugProcess == null)
                 return;
 
             CONTEXT context = new CONTEXT
@@ -149,7 +151,7 @@ namespace MugenWatcher.Watcher
 
             try
             {
-                num = OpenThread(ThreadAccessFlags.SUSPEND_RESUME | ThreadAccessFlags.GET_CONTEXT | ThreadAccessFlags.SET_CONTEXT | ThreadAccessFlags.QUERY_INFORMATION, false, (uint)this.debugTargetThread);
+                num = OpenThread(ThreadAccessFlags.SUSPEND_RESUME | ThreadAccessFlags.GET_CONTEXT | ThreadAccessFlags.SET_CONTEXT | ThreadAccessFlags.QUERY_INFORMATION, false, (uint)this.DebugTargetThread);
                 if (!(num != IntPtr.Zero) || SuspendThreadEx(num) == -1)
                     return;
                 if (GetThreadContextEx(num, ref context))
@@ -169,13 +171,13 @@ namespace MugenWatcher.Watcher
 
         internal CONTEXT GetDebugThreadContext(MugenProcessWatcher watcher, int threadID)
         {
-            if (threadID == 0) threadID = this.debugTargetThread;
+            if (threadID == 0) threadID = this.DebugTargetThread;
             CONTEXT context = new CONTEXT
             {
                 ContextFlags = (uint)CONTEXT_FLAGS.CONTEXT_ALL
             };
 
-            if (this.debugProcess == null || threadID == 0)
+            if (this.DebugProcess == null || threadID == 0)
                 return context;
 
             IntPtr debugPtr = IntPtr.Zero;
@@ -199,9 +201,9 @@ namespace MugenWatcher.Watcher
 
         internal void SetDebugThreadContext(MugenProcessWatcher watcher, CONTEXT context, int threadID)
         {
-            if (threadID == 0) threadID = this.debugTargetThread;
+            if (threadID == 0) threadID = this.DebugTargetThread;
 
-            if (this.debugProcess == null || threadID == 0)
+            if (this.DebugProcess == null || threadID == 0)
                 return;
 
             IntPtr debugPtr = IntPtr.Zero;
@@ -223,7 +225,7 @@ namespace MugenWatcher.Watcher
 
         internal uint GetStackPointer(MugenProcessWatcher watcher)
         {
-            if (this.debugProcess == null || this.debugTargetThread == 0)
+            if (this.DebugProcess == null || this.DebugTargetThread == 0)
                 return 0;
 
             CONTEXT context = new CONTEXT
@@ -235,7 +237,7 @@ namespace MugenWatcher.Watcher
             uint num2 = 0;
             try
             {
-                num1 = OpenThread(ThreadAccessFlags.GET_CONTEXT | ThreadAccessFlags.QUERY_INFORMATION, false, (uint)this.debugTargetThread);
+                num1 = OpenThread(ThreadAccessFlags.GET_CONTEXT | ThreadAccessFlags.QUERY_INFORMATION, false, (uint)this.DebugTargetThread);
                 if (num1 != IntPtr.Zero)
                 {
                     if (GetThreadContextEx(num1, ref context))
@@ -258,31 +260,31 @@ namespace MugenWatcher.Watcher
         {
             try
             {
-                this.debugControl.Detach(this.debugProcess);
-                this.debugProcess.Dispose();
+                this.DebugControl.Detach(this.DebugProcess);
+                this.DebugProcess.Dispose();
             }
             catch
             {
             }
-            this.debugProcess = (NativeDbgProcess)null;
+            this.DebugProcess = (NativeDbgProcess)null;
         }
 
         internal void AttachDebugProcess(int processID)
         {
-            this.debugProcess = this.debugControl.Attach(processID);
+            this.DebugProcess = this.DebugControl.Attach(processID);
         }
 
         private void ProcessWatcherEventHandler(object sender, DoWorkEventArgs e)
         {
-            if (debugRunner != null) debugRunner.Initialize();
+            if (DebugRunner != null) DebugRunner.Initialize();
             // will represent the thread we set BPs in
-            this.debugTargetThread = 0;
-            while (!this.processWatcher.CancellationPending)
+            this.DebugTargetThread = 0;
+            while (!this.ProcessWatcher.CancellationPending)
             {
                 // check if it's time to trigger a debug event callback
-                if (this.debugProcess != null)
+                if (this.DebugProcess != null)
                 {
-                    NativeEvent awaitedNativeEvent = this.debugControl.WaitForDebugEvent(16);
+                    NativeEvent awaitedNativeEvent = this.DebugControl.WaitForDebugEvent(16);
                     // handle bp event if it was found
                     if (awaitedNativeEvent != null)
                     {
@@ -291,41 +293,41 @@ namespace MugenWatcher.Watcher
                         if (awaitedNativeEvent is ExceptionNativeEvent)
                         {
                             // callback to the hooked debug event
-                            if (debugRunner != null) debugRunner.HandleNativeEvent(awaitedNativeEvent);
+                            if (DebugRunner != null) DebugRunner.HandleNativeEvent(awaitedNativeEvent);
                         }
                         // boilerplate
                         else if (awaitedNativeEvent is CreateProcessDebugEvent)
                         {
-                            this.debugControl.ContinueEvent(awaitedNativeEvent);
-                            this.debugTargetThread = awaitedNativeEvent.ThreadId;
+                            this.DebugControl.ContinueEvent(awaitedNativeEvent);
+                            this.DebugTargetThread = awaitedNativeEvent.ThreadId;
                         }
                         else if (awaitedNativeEvent is ExitProcessDebugEvent)
                         {
-                            this.debugControl.ContinueEvent(awaitedNativeEvent);
+                            this.DebugControl.ContinueEvent(awaitedNativeEvent);
                             this.DisposeDebugProcess();
                         }
                         else
-                            this.debugControl.ContinueEvent(awaitedNativeEvent);
+                            this.DebugControl.ContinueEvent(awaitedNativeEvent);
                     }
                 }
                 // check the status of the trigger check/apply next command
                 else
                 {
-                    if (debugRunner != null) debugRunner.HandleUnsetDebugProcess();
+                    if (DebugRunner != null) DebugRunner.HandleUnsetDebugProcess();
                 }
-                if (debugRunner != null)
-                    if (!debugRunner.MainLoop()) 
+                if (DebugRunner != null)
+                    if (!DebugRunner.MainLoop()) 
                         break;
             }
-            if (debugRunner != null) debugRunner.Cleanup();
+            if (DebugRunner != null) DebugRunner.Cleanup();
 
-            while (this.debugProcess != null)
+            while (this.DebugProcess != null)
             {
-                NativeEvent nativeEvent2 = this.debugControl.WaitForDebugEvent(16);
+                NativeEvent nativeEvent2 = this.DebugControl.WaitForDebugEvent(16);
                 if (nativeEvent2 != null)
                 {
                     nativeEvent2.Process.HandleIfLoaderBreakpoint(nativeEvent2);
-                    this.debugControl.ContinueEvent(nativeEvent2);
+                    this.DebugControl.ContinueEvent(nativeEvent2);
                     if (nativeEvent2 is ExitProcessDebugEvent)
                     {
                         this.DisposeDebugProcess();
@@ -336,7 +338,7 @@ namespace MugenWatcher.Watcher
                     this.DisposeDebugProcess();
                 }
             }
-            if (debugRunner != null) debugRunner.Uninitialize();
+            if (DebugRunner != null) DebugRunner.Uninitialize();
         }
     }
 }

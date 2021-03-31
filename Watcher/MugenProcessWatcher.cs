@@ -140,7 +140,7 @@ namespace MugenWatcher.Watcher
 
         public NativePipeline GetDebugController()
         {
-            return this.debugManager.debugControl;
+            return this.debugManager.DebugControl;
         }
 
         public double GetDoubleData(uint addr, uint offset) => this.processManager.GetDoubleData(addr, offset);
@@ -204,12 +204,12 @@ namespace MugenWatcher.Watcher
 
         public BackgroundWorker GetProcessWatcher()
         {
-            return debugManager.processWatcher;
+            return debugManager.ProcessWatcher;
         }
 
         public NativeDbgProcess GetDebugProcess()
         {
-            return debugManager.debugProcess;
+            return debugManager.DebugProcess;
         }
 
         public bool SetInstructionBreakpoint(uint targetAddress, int debugSlot = 0)
@@ -239,7 +239,7 @@ namespace MugenWatcher.Watcher
 
         public void ContinueEvent(NativeEvent awaitedNativeEvent, bool bNotHandle)
         {
-            this.debugManager.debugControl.ContinueEvent(awaitedNativeEvent, bNotHandle);
+            this.debugManager.DebugControl.ContinueEvent(awaitedNativeEvent, bNotHandle);
         }
 
         public void DisposeDebugProcess()
