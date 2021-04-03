@@ -122,8 +122,14 @@ namespace MugenWatcher.Watcher
 
         internal int ReadMemoryEx(uint baseAddr, uint offset, ref byte[] buf)
         {
-            uint len = (uint) buf.Length;
-            return this.ReadMemory((IntPtr) (baseAddr + offset), ref buf, len);
+            uint len = (uint)buf.Length;
+            return this.ReadMemory((IntPtr)(baseAddr + offset), ref buf, len);
+        }
+
+        internal void WriteMemoryEx(uint baseAddr, uint offset, byte[] buf)
+        {
+            uint len = (uint)buf.Length;
+            this.WriteMemory((IntPtr)(baseAddr + offset), ref buf, len);
         }
 
         /// <summary>

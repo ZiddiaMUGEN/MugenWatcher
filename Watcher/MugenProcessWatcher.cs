@@ -160,6 +160,11 @@ namespace MugenWatcher.Watcher
             return this.processManager.ReadMemoryEx(baseAddr, offset, ref buf);
         }
 
+        public void WriteMemoryEx(uint baseAddr, uint offset, byte[] buf)
+        {
+            this.processManager.WriteMemoryEx(baseAddr, offset, buf);
+        }
+
         public bool DetectMugenVersion(FileVersionInfo versionInfo)
         {
             this.SetMugenVersion(MugenType_t.MUGEN_TYPE_WINMUGEN);
