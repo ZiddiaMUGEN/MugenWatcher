@@ -364,3 +364,4 @@ FodyWeavers.xsd
 # manually added
 Microsoft/*
 Properties/*
+dependencies/*
