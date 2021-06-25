@@ -34,6 +34,23 @@ namespace MugenWatcher.Utils
             return watcher.GetInt32Data(projStruct, 0);
         }
 
+        public static uint GetParentAddress(MugenProcessWatcher watcher, uint playerAddr) => (uint)watcher.GetInt32Data(playerAddr, watcher.MugenDatabase.PARENT_ID_PLAYER_OFFSET + 0x04);
+        public static uint GetRootAddress(MugenProcessWatcher watcher, uint playerAddr) => (uint)watcher.GetInt32Data(playerAddr, watcher.MugenDatabase.PARENT_ID_PLAYER_OFFSET + 0x08);
+        public static int GetTeamSide(MugenProcessWatcher watcher, uint playerAddr)
+        {
+            bool isLeftTeam = GameUtils.GetP1Addr(watcher) == playerAddr || GameUtils.GetP3Addr(watcher) == playerAddr;
+            if (!isLeftTeam) isLeftTeam |= GameUtils.GetP1Addr(watcher) == GetRootAddress(watcher, playerAddr) || GameUtils.GetP3Addr(watcher) == GetRootAddress(watcher, playerAddr);
+
+            return isLeftTeam ? 1 : 2;
+        }
+
+        public static uint GetEnemyAddress(MugenProcessWatcher watcher, uint playerAddr)
+        {
+            int teamside = GetTeamSide(watcher, playerAddr);
+            if (teamside == 1) return GameUtils.GetP1Addr(watcher);
+            else return GameUtils.GetP2Addr(watcher);
+        }
+
         public static int GetProjListAddress(MugenProcessWatcher watcher, uint projBaseAddr) => watcher.GetInt32Data(projBaseAddr, watcher.MugenDatabase.PROJ_LIST_PROJ_BASE_OFFSET);
 
         public static bool DoesPlayerExist(MugenProcessWatcher watcher, uint playerAddr) => watcher.GetInt32Data(playerAddr, watcher.MugenDatabase.EXIST_PLAYER_OFFSET) > 0U;
