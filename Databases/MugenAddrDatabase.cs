@@ -94,6 +94,10 @@ namespace MugenWatcher.Databases
         /// </summary>
         public uint DEBUG_TARGET_BASE_OFFSET;
         /// <summary>
+        /// Debug mode CLSN display flag (0=none, 1=outline, 2=filled)
+        /// </summary>
+        public uint DEBUG_CLSN_DISPLAY_MODE;
+        /// <summary>
         /// Current gametime for match.
         /// </summary>
         public uint GAMETIME_BASE_OFFSET;
@@ -504,6 +508,109 @@ namespace MugenWatcher.Databases
         /// Length of each target entry.
         /// </summary>
         public uint OFFSET_TARGET_LIST_OFFSET;
+
+        /// <summary>
+        /// Base offset to constant values.
+        /// </summary>
+        public uint CONST_PLAYER_OFFSET;
+        /**
+         * Constant value offsets within base constant structure.
+         */
+        public int CONST_DATA_LIFE;
+        public int CONST_DATA_POWER;
+        public int CONST_DATA_ATTACK;
+        public int CONST_SIZE_ATTACK_Z_WIDTH_FRONT;
+        public int CONST_SIZE_ATTACK_Z_WIDTH_BACK;
+        public int CONST_DATA_AIRJUGGLE;
+        public int CONST_SIZE_ATTACK_DIST;
+        public int CONST_SIZE_PROJ_ATTACK_DIST;
+        public int CONST_DATA_DEFENCE;
+        public int CONST_DATA_FALL_DEFENCE_MUL;
+        public int CONST_DATA_LIEDOWN_TIME;
+        public int CONST_SIZE_XSCALE;
+        public int CONST_SIZE_YSCALE;
+        public int CONST_SIZE_GROUND_BACK;
+        public int CONST_SIZE_GROUND_FRONT;
+        public int CONST_SIZE_AIR_BACK;
+        public int CONST_SIZE_AIR_FRONT;
+        public int CONST_SIZE_Z_WIDTH;
+        public int CONST_SIZE_HEIGHT;
+        public int CONST_SIZE_PROJ_DOSCALE;
+        public int CONST_SIZE_HEAD_POS_X;
+        public int CONST_SIZE_HEAD_POS_Y;
+        public int CONST_SIZE_MID_POS_X;
+        public int CONST_SIZE_MID_POS_Y;
+        public int CONST_SIZE_SHADOWOFFSET;
+        public int CONST_VELOCITY_WALK_FWD_X;
+        public int CONST_VELOCITY_WALK_BACK_X;
+        public int CONST_VELOCITY_WALK_UP_X;
+        public int CONST_VELOCITY_WALK_DOWN_X;
+        public int CONST_VELOCITY_RUN_FWD_X;
+        public int CONST_VELOCITY_RUN_FWD_Y;
+        public int CONST_VELOCITY_RUN_BACK_X;
+        public int CONST_VELOCITY_RUN_BACK_Y;
+        public int CONST_VELOCITY_RUN_DOWN_X;
+        public int CONST_VELOCITY_RUN_DOWN_Y;
+        public int CONST_VELOCITY_RUN_UP_X;
+        public int CONST_VELOCITY_RUN_UP_Y;
+        public int CONST_VELOCITY_JUMP_Y;
+        public int CONST_VELOCITY_JUMP_NEU_X;
+        public int CONST_VELOCITY_JUMP_FWD_X;
+        public int CONST_VELOCITY_JUMP_BACK_X;
+        public int CONST_VELOCITY_JUMP_UP_X;
+        public int CONST_VELOCITY_JUMP_DOWN_X;
+        public int CONST_VELOCITY_RUNJUMP_FWD_Y;
+        public int CONST_VELOCITY_RUNJUMP_FWD_X;
+        public int CONST_VELOCITY_RUNJUMP_BACK_X;
+        public int CONST_VELOCITY_RUNJUMP_UP_X;
+        public int CONST_VELOCITY_RUNJUMP_DOWN_X;
+        public int CONST_MOVEMENT_AIRJUMP_NUM;
+        public int CONST_MOVEMENT_AIRJUMP_HEIGHT;
+        public int CONST_VELOCITY_AIRJUMP_Y;
+        public int CONST_VELOCITY_AIRJUMP_NEU_X;
+        public int CONST_VELOCITY_AIRJUMP_FWD_X;
+        public int CONST_VELOCITY_AIRJUMP_BACK_X;
+        public int CONST_VELOCITY_AIRJUMP_UP_X;
+        public int CONST_VELOCITY_AIRJUMP_DOWN_X;
+        public int CONST_MOVEMENT_YACCEL;
+        public int CONST_MOVEMENT_STAND_FRICTION;
+        public int CONST_MOVEMENT_CROUCH_FRICTION;
+        public int CONST_DATA_SPARKNO;
+        public int CONST_DATA_GUARD_SPARKNO;
+        public int CONST_DATA_KO_ECHO;
+        public int CONST_SIZE_DRAW_OFFSET_X;
+        public int CONST_SIZE_DRAW_OFFSET_Y;
+        public int CONST_DATA_INTPERSISTINDEX;
+        public int CONST_DATA_FLOATPERSISTINDEX;
+        public int CONST_VELOCITY_AIR_GETHIT_GROUNDRECOVER_X;
+        public int CONST_VELOCITY_AIR_GETHIT_GROUNDRECOVER_Y;
+        public int CONST_VELOCITY_AIR_GETHIT_AIRRECOVER_MUL_X;
+        public int CONST_VELOCITY_AIR_GETHIT_AIRRECOVER_MUL_Y;
+        public int CONST_VELOCITY_AIR_GETHIT_AIRRECOVER_ADD_X;
+        public int CONST_VELOCITY_AIR_GETHIT_AIRRECOVER_ADD_Y;
+        public int CONST_VELOCITY_AIR_GETHIT_AIRRECOVER_BACK;
+        public int CONST_VELOCITY_AIR_GETHIT_AIRRECOVER_FWD;
+        public int CONST_VELOCITY_AIR_GETHIT_AIRRECOVER_UP;
+        public int CONST_VELOCITY_AIR_GETHIT_AIRRECOVER_DOWN;
+        public int CONST_MOVEMENT_STAND_FRICTION_THRESHOLD;
+        public int CONST_MOVEMENT_CROUCH_FRICTION_THRESHOLD;
+        public int CONST_MOVEMENT_AIR_GETHIT_GROUNDLEVEL;
+        public int CONST_MOVEMENT_AIR_GETHIT_GROUNDRECOVER_GROUND_THRESHOLD;
+        public int CONST_MOVEMENT_AIR_GETHIT_GROUNDRECOVER_GROUNDLEVEL;
+        public int CONST_MOVEMENT_AIR_GETHIT_AIRRECOVER_THRESHOLD;
+        public int CONST_MOVEMENT_AIR_GETHIT_AIRRECOVER_YACCEL;
+        public int CONST_MOVEMENT_AIR_GETHIT_TRIP_GROUNDLEVEL;
+        public int CONST_MOVEMENT_DOWN_BOUNCE_OFFSET_X;
+        public int CONST_MOVEMENT_DOWN_BOUNCE_OFFSET_Y;
+        public int CONST_MOVEMENT_DOWN_BOUNCE_YACCEL;
+        public int CONST_MOVEMENT_DOWN_BOUNCE_GROUNDLEVEL;
+        public int CONST_MOVEMENT_DOWN_FRICTION_THRESHOLD;
+
+        public uint PLAYER_FLAGS_EXIST;
+        public uint PLAYER_FLAGS_FROZEN;
+
+
+
 
         /// <summary>
         /// Gets the address database instance for an input MugenType_t.

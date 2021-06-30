@@ -34,6 +34,18 @@ namespace MugenWatcher.Utils
             return watcher.GetInt32Data(projStruct, 0);
         }
 
+        public static int GetIntegerConstant(MugenProcessWatcher watcher, uint playerAddr, int constValue)
+        {
+            if (constValue == -1) return 0;
+            return watcher.GetInt32Data(playerAddr, 0x50 + (0x04 * (uint)constValue));
+        }
+
+        public static float GetFloatConstant(MugenProcessWatcher watcher, uint playerAddr, int constValue)
+        {
+            if (constValue == -1) return 0;
+            return watcher.GetFloatData(playerAddr, 0x50 + (0x04 * (uint)constValue));
+        }
+
         public static uint GetParentAddress(MugenProcessWatcher watcher, uint playerAddr) => (uint)watcher.GetInt32Data(playerAddr, watcher.MugenDatabase.PARENT_ID_PLAYER_OFFSET + 0x04);
         public static uint GetRootAddress(MugenProcessWatcher watcher, uint playerAddr) => (uint)watcher.GetInt32Data(playerAddr, watcher.MugenDatabase.PARENT_ID_PLAYER_OFFSET + 0x08);
         public static int GetTeamSide(MugenProcessWatcher watcher, uint playerAddr)

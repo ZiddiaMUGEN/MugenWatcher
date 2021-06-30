@@ -134,6 +134,8 @@ namespace MugenWatcher.Utils
 
         public static int GetSuperPauseTime(MugenProcessWatcher watcher, uint baseAddr) => baseAddr != 0U ? watcher.GetInt32Data(baseAddr, watcher.MugenDatabase.SUPER_PAUSE_TIME_BASER_OFFSET) : 0;
 
+        public static int GetDebugModeClsnDisplayMode(MugenProcessWatcher watcher, uint baseAddr) => baseAddr != 0U ? watcher.GetInt32Data(baseAddr, watcher.MugenDatabase.DEBUG_CLSN_DISPLAY_MODE) : 0;
+
         /// <summary>
         /// fetches the global AssertSpecial flags.
         /// <br/>these are a list of sequential int flags relative to the base address.
