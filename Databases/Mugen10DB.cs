@@ -122,6 +122,8 @@ namespace MugenWatcher.Databases
             LOCALCOORD_X_PLAYER_INFO_OFFSET = 0x90;
             LOCALCOORD_Y_PLAYER_INFO_OFFSET = 0x98;
             CONST_PLAYER_OFFSET = 0x50;
+            AILEVEL_PLAYER_OFFSET = 0x2254;
+            AIENABLED_PLAYER_OFFSET = 0x1488;
 
             STAGEPOS_X_PLAYER_OFFSET = 0x1F4;
             STAGEPOS_Y_PLAYER_OFFSET = 0x1F8;

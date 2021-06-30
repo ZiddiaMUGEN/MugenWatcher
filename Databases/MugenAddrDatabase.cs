@@ -431,6 +431,14 @@ namespace MugenWatcher.Databases
         /// Offset to the AttackMulSet multiplier.
         /// </summary>
         public uint ATTACK_MUL_SET_PLAYER_OFFSET;
+        /// <summary>
+        /// Offset to the AiLevel trigger's value. Note this will be set even if AI is disabled, so you must look at both this and AILEVEL_PLAYER_OFFSET to be sure.
+        /// </summary>
+        public uint AILEVEL_PLAYER_OFFSET;
+        /// <summary>
+        /// Offset to the AI enabled flag.
+        /// </summary>
+        public uint AIENABLED_PLAYER_OFFSET;
 
         /* Player Info Offsets - relative to the pointer at the first byte of [PLAYER_1_BASE_OFFSET]. */
         /// <summary>

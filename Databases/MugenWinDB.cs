@@ -49,6 +49,8 @@ namespace MugenWatcher.Databases
             this.PAUSE_TIME_BASE_OFFSET = 0xBBD4;
             this.SUPER_PAUSE_TIME_BASER_OFFSET = 0xBBF8;
             this.ASSERT_1_PLAYER_OFFSET = 0xBB78;
+            this.AILEVEL_PLAYER_OFFSET = 0x33F8;
+            this.AIENABLED_PLAYER_OFFSET = 0x262C;
 
             /* Explod Offsets - relative to EXPLOD_LIST_BASE_OFFSET */
             this.OFFSET_EXPLOD_LIST_OFFSET = 0xE4;
