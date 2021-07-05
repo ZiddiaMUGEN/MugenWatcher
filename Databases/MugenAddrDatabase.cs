@@ -260,6 +260,10 @@ namespace MugenWatcher.Databases
         /// Offset to the ProjID.
         /// </summary>
         public uint PROJ_ID_PROJ_OFFSET;
+        /// <summary>
+        /// Offset to the proj animation index.
+        /// </summary>
+        public uint PROJ_ANIM_INDEX_PROJ_OFFSET;
 
 
         /* Player Offsets - relative to PLAYER_1_BASE_OFFSET */

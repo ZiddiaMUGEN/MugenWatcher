@@ -30,10 +30,10 @@ namespace MugenWatcher.Watcher
         private readonly MugenProcessManager processManager;
         private readonly DebugProcessManager debugManager;
 
-        public MugenProcessWatcher()
+        public MugenProcessWatcher(bool infinite = false)
         {
             this.processManager = new MugenProcessManager();
-            this.debugManager = new DebugProcessManager();
+            this.debugManager = new DebugProcessManager(infinite);
         }
 
         /// <summary>

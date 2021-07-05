@@ -111,6 +111,7 @@ namespace MugenWatcher.Databases
             PROJ_ID_PROJ_OFFSET = 0x0;
             PROJ_X_PROJ_OFFSET = 0xA4;
             PROJ_Y_PROJ_OFFSET = 0xA8;
+            PROJ_ANIM_INDEX_PROJ_OFFSET = 0x464;
             OFFSET_ANIM_LIST_OFFSET = 0x10;
             ANIM_NO_ANIM_OFFSET = 0xC;
             ANIM_ADDR_PLAYER_OFFSET = 0x1534;

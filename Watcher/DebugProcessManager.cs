@@ -19,8 +19,11 @@ namespace MugenWatcher.Watcher
         internal int DebugTargetThread { get; private set; }
         internal IDebugProcessRunner DebugRunner { get; private set; }
 
-        internal DebugProcessManager()
+        internal bool WaitInfinite { get; set; }
+
+        internal DebugProcessManager(bool infinite = false)
         {
+            this.WaitInfinite = infinite;
             this.DebugControl = new NativePipeline();
             this.DebugRunner = null;
             this.ProcessWatcher = new BackgroundWorker
@@ -284,7 +287,7 @@ namespace MugenWatcher.Watcher
                 // check if it's time to trigger a debug event callback
                 if (this.DebugProcess != null)
                 {
-                    NativeEvent awaitedNativeEvent = this.DebugControl.WaitForDebugEvent(16);
+                    NativeEvent awaitedNativeEvent = this.WaitInfinite ? this.DebugControl.WaitForDebugEventInfinite() : this.DebugControl.WaitForDebugEvent(16);
                     // handle bp event if it was found
                     if (awaitedNativeEvent != null)
                     {

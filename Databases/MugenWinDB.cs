@@ -68,6 +68,7 @@ namespace MugenWatcher.Databases
             this.EXIST_PROJ_OFFSET = 0x4;
             this.PROJ_X_PROJ_OFFSET = 0x5C;
             this.PROJ_Y_PROJ_OFFSET = 0x60;
+            this.PROJ_ANIM_INDEX_PROJ_OFFSET = 0x290;
 
             /* Player Offsets - relative to PLAYER_1_BASE_OFFSET */
             this.EXIST_PLAYER_OFFSET = 0x158;

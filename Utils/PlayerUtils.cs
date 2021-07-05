@@ -325,7 +325,14 @@ namespace MugenWatcher.Utils
             if (watcher.MugenVersion == MugenType_t.MUGEN_TYPE_MUGEN11A4 || watcher.MugenVersion == MugenType_t.MUGEN_TYPE_MUGEN11B1)
             {
                 double stagePosY = watcher.GetDoubleData(playerAddr, watcher.MugenDatabase.STAGEPOS_Y_PLAYER_OFFSET);
-                return (float)stagePosY;
+                float camPosY = watcher.GetFloatData(baseAddr, watcher.MugenDatabase.CAMERAPOS_Y_BASE_OFFSET);
+
+                float stageLocalY = GameUtils.GetScreenY(watcher);
+                double playerLocalY = GetLocalCoordY(watcher, playerAddr);
+
+                float scale = (float)(playerLocalY / (playerLocalY + stageLocalY));
+
+                return (float)((stagePosY - camPosY) * scale);
             }
             else if (watcher.MugenVersion == MugenType_t.MUGEN_TYPE_MUGEN10)
             {
