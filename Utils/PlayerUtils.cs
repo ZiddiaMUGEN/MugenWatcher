@@ -97,15 +97,34 @@ namespace MugenWatcher.Utils
 
         public static int GetProjX(MugenProcessWatcher watcher, uint playerAddr, uint projAddr)
         {
-            if (watcher.MugenVersion == MugenType_t.MUGEN_TYPE_MUGEN11A4)
-                return (int)((double)watcher.GetFloatData(projAddr, watcher.MugenDatabase.PROJ_X_PROJ_OFFSET) / (GameUtils.GetScreenX(watcher) / GetLocalCoordX(watcher, playerAddr)));
+            if (watcher.MugenVersion == MugenType_t.MUGEN_TYPE_MUGEN11A4 || watcher.MugenVersion == MugenType_t.MUGEN_TYPE_MUGEN11B1)
+            {
+                double projPosX = watcher.GetDoubleData(projAddr, watcher.MugenDatabase.PROJ_X_PROJ_OFFSET);
+                float camPosX = watcher.GetFloatData((uint)GameUtils.GetBaseAddress(watcher), watcher.MugenDatabase.CAMERAPOS_X_BASE_OFFSET);
+
+                float stageLocalX = GameUtils.GetScreenX(watcher);
+                double playerLocalX = GetLocalCoordX(watcher, playerAddr);
+
+                float scale = (float)(playerLocalX / stageLocalX);
+                return (int)((projPosX - camPosX) * scale);
+            }
             return watcher.MugenVersion != MugenType_t.MUGEN_TYPE_MUGEN10 ? watcher.GetInt32Data(projAddr, watcher.MugenDatabase.PROJ_X_PROJ_OFFSET) : 320 + (int)watcher.GetFloatData(projAddr, watcher.MugenDatabase.PROJ_X_PROJ_OFFSET);
         }
 
         public static int GetProjY(MugenProcessWatcher watcher, uint playerAddr, uint projAddr)
         {
-            if (watcher.MugenVersion == MugenType_t.MUGEN_TYPE_MUGEN11A4)
-                return (int)((double)watcher.GetFloatData(projAddr, watcher.MugenDatabase.PROJ_Y_PROJ_OFFSET) / (GameUtils.GetScreenY(watcher) / GetLocalCoordY(watcher, playerAddr)));
+            if (watcher.MugenVersion == MugenType_t.MUGEN_TYPE_MUGEN11A4 || watcher.MugenVersion == MugenType_t.MUGEN_TYPE_MUGEN11B1)
+            {
+                double projPosY = watcher.GetDoubleData(projAddr, watcher.MugenDatabase.PROJ_Y_PROJ_OFFSET);
+                float camPosY = watcher.GetFloatData((uint)GameUtils.GetBaseAddress(watcher), watcher.MugenDatabase.CAMERAPOS_Y_BASE_OFFSET);
+
+                float stageLocalY = GameUtils.GetScreenY(watcher);
+                double playerLocalY = GetLocalCoordY(watcher, playerAddr);
+
+                float scale = (float)(playerLocalY / (playerLocalY + stageLocalY));
+
+                return (int)((projPosY - camPosY) * scale);
+            }
             return watcher.MugenVersion != MugenType_t.MUGEN_TYPE_MUGEN10 ? watcher.GetInt32Data(projAddr, watcher.MugenDatabase.PROJ_Y_PROJ_OFFSET) : 240 + (int)watcher.GetFloatData(projAddr, watcher.MugenDatabase.PROJ_Y_PROJ_OFFSET);
         }
 

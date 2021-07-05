@@ -109,8 +109,8 @@ namespace MugenWatcher.Databases
             PROJ_MAX_PROJ_BASE_OFFSET = 0xC;
             EXIST_PROJ_OFFSET = 0x4;
             PROJ_ID_PROJ_OFFSET = 0x0;
-            PROJ_X_PROJ_OFFSET = 0xA4;
-            PROJ_Y_PROJ_OFFSET = 0xA8;
+            PROJ_X_PROJ_OFFSET = 0x48;
+            PROJ_Y_PROJ_OFFSET = 0x50;
             PROJ_ANIM_INDEX_PROJ_OFFSET = 0x464;
             OFFSET_ANIM_LIST_OFFSET = 0x10;
             ANIM_NO_ANIM_OFFSET = 0xC;
