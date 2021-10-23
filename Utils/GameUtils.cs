@@ -86,7 +86,7 @@ namespace MugenWatcher.Utils
             GameUtils.IsTeam1Win(watcher)
             && watcher.GetInt32Data((uint)GameUtils.GetBaseAddress(watcher), watcher.MugenDatabase.TEAM_WIN_KO_BASE_OFFSET) == 2;
 
-        public static bool IsTeam2Win(MugenProcessWatcher watcher) => watcher.GetInt32Data((uint)GameUtils.GetBaseAddress(watcher), watcher.MugenDatabase.TEAM_WIN_BASE_OFFSET) == 1;
+        public static bool IsTeam2Win(MugenProcessWatcher watcher) => watcher.GetInt32Data((uint)GameUtils.GetBaseAddress(watcher), watcher.MugenDatabase.TEAM_WIN_BASE_OFFSET) == 2;
         public static bool IsTeam2WinKO(MugenProcessWatcher watcher) =>
             GameUtils.IsTeam2Win(watcher)
             && watcher.GetInt32Data((uint)GameUtils.GetBaseAddress(watcher), watcher.MugenDatabase.TEAM_WIN_KO_BASE_OFFSET) == 1;
