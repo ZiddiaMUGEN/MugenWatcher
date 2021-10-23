@@ -111,6 +111,8 @@ namespace MugenWatcher.Databases
             this.SUPER_PAUSE_MOVE_TIME_PLAYER_OFFSET = 0x1E0;
             this.ATTACK_MUL_SET_PLAYER_OFFSET = 0x188;
             this.CONST_PLAYER_OFFSET = 0x50;
+            this.PROJ_HIT_TIME_PLAYER_OFFSET = 0x218;
+            this.PROJ_HIT_ID_PLAYER_OFFSET = 0x210;
 
             /* Player Info Offsets - relative to the pointer at the first byte of [PLAYER_1_BASE_OFFSET]. */
             this.DISPLAY_NAME_PLAYER_INFO_OFFSET = 0x30;

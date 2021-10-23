@@ -28,6 +28,16 @@ namespace MugenWatcher.Utils
             return length;
         }
 
+        public static int GetProjHitID(MugenProcessWatcher watcher, uint playerAddr)
+        {
+            return watcher.GetInt32Data(playerAddr, watcher.MugenDatabase.PROJ_HIT_ID_PLAYER_OFFSET);
+        }
+
+        public static int GetProjHitTime(MugenProcessWatcher watcher, uint playerAddr)
+        {
+            return watcher.GetInt32Data(playerAddr, watcher.MugenDatabase.PROJ_HIT_TIME_PLAYER_OFFSET);
+        }
+
         public static int GetProjBaseAddress(MugenProcessWatcher watcher, uint playerAddr)
         {
             uint projStruct = (uint) watcher.GetInt32Data(playerAddr, watcher.MugenDatabase.PROJ_BASE_PLAYER_OFFSET);

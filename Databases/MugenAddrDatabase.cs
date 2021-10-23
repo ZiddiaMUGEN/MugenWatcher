@@ -443,6 +443,14 @@ namespace MugenWatcher.Databases
         /// Offset to the AI enabled flag.
         /// </summary>
         public uint AIENABLED_PLAYER_OFFSET;
+        /// <summary>
+        /// ID of the last Projectile landed by this player.
+        /// </summary>
+        public uint PROJ_HIT_ID_PLAYER_OFFSET;
+        /// <summary>
+        /// Time since the last Projectile was landed.
+        /// </summary>
+        public uint PROJ_HIT_TIME_PLAYER_OFFSET;
 
         /* Player Info Offsets - relative to the pointer at the first byte of [PLAYER_1_BASE_OFFSET]. */
         /// <summary>

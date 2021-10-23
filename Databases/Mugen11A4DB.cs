@@ -66,6 +66,8 @@ namespace MugenWatcher.Databases
             HELPER_ID_PLAYER_OFFSET = 0x1644;
             PARENT_ID_PLAYER_OFFSET = 0x1648;
             PROJ_BASE_PLAYER_OFFSET = 0x2C4;
+            PROJ_HIT_TIME_PLAYER_OFFSET = 0x2C0;
+            PROJ_HIT_ID_PLAYER_OFFSET = 0x2B8;
             STATE_OWNER_PLAYER_OFFSET = 0xCC8;
             STATE_NO_PLAYER_OFFSET = 0xCCC;
             PREV_STATE_NO_PLAYER_OFFSET = 0xCD0;
